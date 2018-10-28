@@ -47,6 +47,8 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnSetID")]
     public int playerID = -1;
 
+    public GameObject rhinoInside = null;
+
     void Start()
     {
 
@@ -55,8 +57,11 @@ public class PlayerControl : NetworkBehaviour
             GameObject.Find("Main Camera").SetActive(false);
 
         viewLabel.SetActive(false);
+        
+        if (GameObject.Find("RhinoInside"))
+            rhinoInside = GameObject.Find("RhinoInside");
 
-        if (GameObject.Find("PlayManager"))
+            if (GameObject.Find("PlayManager"))
         {
             playmgr = GameObject.Find("PlayManager").GetComponent<PlayManager>();
             playmgr.AddPlayer();
@@ -297,7 +302,11 @@ public class PlayerControl : NetworkBehaviour
 
     void CreateBlock()
     {
-        Instantiate(block, rayCaster.hit.point, block.transform.rotation);
+        GameObject obj = Instantiate(block, rayCaster.hit.point, block.transform.rotation);
+        if (rhinoInside)
+        {
+            rhinoInside.GetComponent<RhinoInside>().AddToRhino(obj.GetComponent<MeshFilter>());
+        }
         RpcCreateBlock();
     }
 
