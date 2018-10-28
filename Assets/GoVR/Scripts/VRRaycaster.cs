@@ -12,6 +12,8 @@ public class VRRaycaster : MonoBehaviour
     public LayerMask excludeLayers;
     public VRRaycaster.Callback raycastHitCallback;
 
+    public RaycastHit hit;
+
     void Awake()
     {
         if (lineRenderer == null)
@@ -26,10 +28,10 @@ public class VRRaycaster : MonoBehaviour
     
     void Update()
     {
-            lineRenderer.widthMultiplier = 0.0f;
+        lineRenderer.widthMultiplier = 0.0f;
 
         //display when trigger is pulled but not when touchpad is touched
-        if (transform.parent.GetComponent<PlayerControl>().lastTriggerState && !transform.parent.GetComponent<PlayerControl>().lastTouchState)
+        if (transform.parent.GetComponent<PlayerControl>().lastTriggerState)
         {
 
             lineRenderer.widthMultiplier = 0.015f;
@@ -43,19 +45,14 @@ public class VRRaycaster : MonoBehaviour
                 lineRenderer.SetPosition(0, laserPointer.origin);
                 lineRenderer.SetPosition(1, laserPointer.origin + laserPointer.direction * maxRayDistance);
             }
-
-            RaycastHit hit;
+            
             if (Physics.Raycast(laserPointer, out hit, maxRayDistance, ~excludeLayers))
             {
                 if (lineRenderer != null)
-                {
                     lineRenderer.SetPosition(1, hit.point);
-                }
 
                 if (raycastHitCallback != null)
-                {
                     raycastHitCallback.Invoke(laserPointer, hit);
-                }
             }
 
         }

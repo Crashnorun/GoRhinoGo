@@ -459,7 +459,6 @@ GameObject:
   - component: {fileID: 20139507242165910}
   - component: {fileID: 81064739196420322}
   - component: {fileID: 124506205118389656}
-  - component: {fileID: 114582844269985950}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1978,6 +1977,8 @@ MonoBehaviour:
   locomotion: {fileID: 1833941011683498}
   viewCam: {fileID: 1816781304513640}
   viewLabel: {fileID: 1718133070557596}
+  rayCaster: {fileID: 114923345663730432}
+  block: {fileID: 1699413241259238, guid: f9abed91e2318024caee1bdd09631b64, type: 2}
   eyeHeightStanding: 5.5
   eyeHeightSeated: 3.5
   transition: 0
@@ -2089,18 +2090,6 @@ MonoBehaviour:
   m_modelGearVrController: {fileID: 1547769896900204}
   m_modelOculusGoController: {fileID: 1851149374241442}
   m_controller: 16777216
---- !u!114 &114582844269985950
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1816781304513640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: 08cf8f84d454e7944a374c7b3f364577, type: 2}
 --- !u!114 &114620301103930910
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2247,7 +2236,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1263146639582458}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f4e6a2c01718754aa88815aec57ddae, type: 3}
   m_Name: 

@@ -17,6 +17,9 @@ public class PlayerControl : NetworkBehaviour
     private OptionManager[] optmgr = new OptionManager[0];
     private PlayManager playmgr = null;
 
+    public VRRaycaster rayCaster = null;
+    public GameObject block = null;
+
     public float eyeHeightStanding = 5.5f;
     public float eyeHeightSeated = 3.5f;
     private bool standing = true;
@@ -72,6 +75,7 @@ public class PlayerControl : NetworkBehaviour
         }
 
         SetHeight();
+        transform.Find("Hand").gameObject.GetComponent<VRRaycaster>();
 
         if (isLocalPlayer)
         {
@@ -172,11 +176,13 @@ public class PlayerControl : NetworkBehaviour
             //touchpad is touched and trigger is pulled
             if (lastTouchState && lastTriggerState)
             {
+                /*
                 viewLabel.SetActive(true);
                 if (teleported && PlayerCount() > 1)
                     SetLabel("Press to gather others");
                 else
                     SetLabel("Press for next view: " + viewmgr.NextViewName());
+                    */
             }
             else
                 viewLabel.SetActive(false);
@@ -187,7 +193,7 @@ public class PlayerControl : NetworkBehaviour
             {
                 //trigger is pulled
                 if (lastTriggerState)
-                    RestoreView();
+                    RemoveBlock();
                 else
                     CycleOptions();
             }
@@ -280,16 +286,37 @@ public class PlayerControl : NetworkBehaviour
             //button was released this frame
             if (lastTouchPress && !currentTouchPress)
             {
-                if (teleported && PlayerCount() > 1)
-                    viewmgr.Gather(this);
-                else
-                    viewmgr.Next();
+                CreateBlock();
             }
             BringToFront();
         }
 
         lastTouchPress = currentTouchPress;
         //don't bring to front - no need to show all movement
+    }
+
+    void CreateBlock()
+    {
+        Instantiate(block, rayCaster.hit.point, block.transform.rotation);
+        RpcCreateBlock();
+    }
+
+    [ClientRpc]
+    void RpcCreateBlock()
+    {
+        Instantiate(block, rayCaster.hit.point, block.transform.rotation);
+    }
+
+    void RemoveBlock()
+    {
+        Destroy(rayCaster.hit.transform.gameObject);
+        RpcRemoveBlock();
+    }
+
+    [ClientRpc]
+    void RpcRemoveBlock()
+    {
+        Destroy(rayCaster.hit.transform.gameObject);
     }
 
     void OnTouchPress(bool currentTouchPress)

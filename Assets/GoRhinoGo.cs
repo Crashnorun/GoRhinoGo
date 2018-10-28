@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 public class MenuItems
 {
     [MenuItem("GoRhinoGo/Launch Grasshopper")]
@@ -9,3 +10,4 @@ public class MenuItems
         PlayerPrefs.DeleteAll();
     }
 }
+#endif
